@@ -1,12 +1,12 @@
 ## How Kiro Helped This Project
 
 Kiro was used to:
-- Design the game state and update loop
+- Design the Snake game state and update loop
 - Debug keyboard input and rendering issues
 - Implement AI-based move analysis
-- Refactor logic for clarity and modularity
+- Refactor logic into clean modules
 
 Kiro accelerated development by:
-- Generating boilerplate logic for the Snake game
-- Suggesting heuristics for AI decision-making
-- Helping visualize AI recommendations in real time
+- Generating boilerplate logic
+- Suggesting AI heuristics
+- Helping visualize AI decisions in real time

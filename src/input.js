@@ -1,6 +1,8 @@
 import { setDirection, DIRECTIONS } from "./game.js";
 
 window.addEventListener("keydown", (e) => {
+  e.preventDefault();
+
   switch (e.key) {
     case "ArrowUp":
       setDirection(DIRECTIONS.UP);

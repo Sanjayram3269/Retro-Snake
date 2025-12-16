@@ -3,7 +3,9 @@ import {
   snake,
   food,
   updateGame,
-  gameOver
+  gameOver,
+  score,
+  resetGame
 } from "./game.js";
 
 import "./input.js";
@@ -25,14 +27,19 @@ function drawCell(x, y, color) {
 }
 
 function draw() {
-  // Clear screen
+  // Clear screen FIRST
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw food
+  // Score
+  ctx.fillStyle = "#0f0";
+  ctx.font = "16px monospace";
+  ctx.fillText(`Score: ${score}`, 10, 40);
+
+  // Food
   drawCell(food.x, food.y, "#f00");
 
-  // Draw snake
+  // Snake
   snake.forEach((segment, index) => {
     drawCell(
       segment.x,
@@ -47,7 +54,6 @@ function draw() {
   if (bestMove) {
     const head = snake[0];
 
-    // Ghost cell (AI suggestion)
     ctx.fillStyle = "rgba(0,255,255,0.4)";
     ctx.fillRect(
       (head.x + bestMove.x) * CELL_SIZE,
@@ -56,7 +62,6 @@ function draw() {
       CELL_SIZE
     );
 
-    // Risk label text
     ctx.fillStyle = "#0ff";
     ctx.font = "16px monospace";
     ctx.fillText(`AI: ${riskLevel}`, 10, 20);
@@ -75,3 +80,8 @@ function gameLoop() {
 }
 
 setInterval(gameLoop, 120);
+
+// Restart button
+document.getElementById("restartBtn").addEventListener("click", () => {
+  resetGame();
+});

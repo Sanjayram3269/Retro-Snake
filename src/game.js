@@ -1,7 +1,5 @@
-// Grid configuration
 export const GRID_SIZE = 20;
 
-// Directions
 export const DIRECTIONS = {
   UP: { x: 0, y: -1 },
   DOWN: { x: 0, y: 1 },
@@ -9,7 +7,6 @@ export const DIRECTIONS = {
   RIGHT: { x: 1, y: 0 }
 };
 
-// Initial game state
 export let snake = [
   { x: 10, y: 10 },
   { x: 9, y: 10 },
@@ -23,18 +20,15 @@ export let food = spawnFood();
 export let score = 0;
 export let gameOver = false;
 
-// Prevent instant reverse (classic rule)
 export function setDirection(newDir) {
   if (
     direction.x + newDir.x === 0 &&
     direction.y + newDir.y === 0
-  ) {
-    return;
-  }
+  ) return;
+
   nextDirection = newDir;
 }
 
-// Game tick update
 export function updateGame() {
   if (gameOver) return;
 
@@ -46,7 +40,6 @@ export function updateGame() {
     y: head.y + direction.y
   };
 
-  // Wall collision
   if (
     newHead.x < 0 ||
     newHead.y < 0 ||
@@ -57,17 +50,13 @@ export function updateGame() {
     return;
   }
 
-  // Self collision
-  for (let segment of snake) {
-    if (segment.x === newHead.x && segment.y === newHead.y) {
-      gameOver = true;
-      return;
-    }
+  if (snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
+    gameOver = true;
+    return;
   }
 
   snake.unshift(newHead);
 
-  // Food collision
   if (newHead.x === food.x && newHead.y === food.y) {
     score += 10;
     food = spawnFood();
@@ -76,20 +65,29 @@ export function updateGame() {
   }
 }
 
-// Spawn food in empty cell
 function spawnFood() {
-  let newFood;
   while (true) {
-    newFood = {
+    const pos = {
       x: Math.floor(Math.random() * GRID_SIZE),
       y: Math.floor(Math.random() * GRID_SIZE)
     };
 
-    const collision = snake.some(
-      segment => segment.x === newFood.x && segment.y === newFood.y
-    );
-
-    if (!collision) break;
+    if (!snake.some(s => s.x === pos.x && s.y === pos.y)) {
+      return pos;
+    }
   }
-  return newFood;
+}
+export function resetGame() {
+  snake.length = 0;
+  snake.push(
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+    { x: 8, y: 10 }
+  );
+
+  direction = DIRECTIONS.RIGHT;
+  nextDirection = DIRECTIONS.RIGHT;
+  score = 0;
+  gameOver = false;
+  food = spawnFood();
 }
